@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Superstore</title>
+  <!-- Website -->
+  <link rel="icon" type="image/x-icon" href="/dist/img/superstore-1.png">
+  <!-- CSS -->
+  <link rel="stylesheet" href="dist/css/style.css">
+  <!-- Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- CSS DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" >
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+  <!-- Chart -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jQuery Pastikan jQuery berada pada paling atas saat pakai datatables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <!-- DataTables Search Highlight -->
+  <script src="https://cdn.datatables.net/plug-ins/1.11.5/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+  <!-- jQuery Highlight -->
+  <script src="https://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+</head>
+<body>
+  <div class="container" id="dashboard">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="logo" >
+        <img src="dist/img/superstore-1.png" alt="Logo-Superstore">
+        <span>Super Store</span>
+      </div>
+      <div class="menu">
+          <button>
+            <a href="#dashboard">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </button>
+          <button>
+            <a href="#box-sales-distribution">
+              <i class="fa fa-sitemap"></i>
+              <span>Sales Distribution</span>
+            </a>
+          </button>
+          <button>
+            <a href="#box-sales-segmentation">
+              <i class="fa fa-child"></i>
+              <span>Sales Segmentation</span>
+            </a>
+          </button>
+          <button>
+            <a href="#box-repetition-trend">
+              <i class="fa fa-line-chart"></i>
+              <span>Repetition Trend</span>
+            </a>
+          </button>
+          <button>
+            <a href="#box-profitable-product">
+              <i class="fa fa-shopping-cart"></i>
+              <span>Profitable Product</span>
+            </a>
+          </button>
+          <button>
+            <a href="#box-data-tables">
+              <i class="fa-solid fa-table"></i>
+              <span>Data Tables</span>
+            </a>
+          </button>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <div class="dashboard mt-0">
+        <h3>Dashboard</h3>
+
+        <!-- filter -->
+        <div class="filter-state">
+          <label for="state">Filter by state:</label><br>
+          <select id="state" name="filter-state">
+              <option value="">Choose State...</option>
+          </select>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard-1 mobile-stat" id="dashboard">
+          <div class="dashboard-1l mobile-stat">
+            <!-- Statistik -->
+            <div class="stat-1 mobile-stat">
+              <!-- Total Populasi -->
+              <div class="stat stat-populasi mobile-stat">
+                <div class="ml" id="total-population">
+                  <p class="body-stat">0</p>
+                </div>
+                <p class="head-stat">Total Population</p>
+              </div>
+              <!-- Total User -->
+              <div class="stat stat-user mobile-stat">
+                <div id="total-user">
+                  <p class="body-stat">0</p>
+                </div>
+                <p class="head-stat">Total User</p>
+              </div>
+            </div>
+            <div class="stat-2 mobile-stat ">
+              <!-- Total Profit -->
+              <div class="stat stat-profit mobile-stat">
+                <div id="total-profit">
+                  <p class="body-stat">0</p>
+                </div>
+                <p class="head-stat">Total Profit</p>
+              </div>
+              <!-- Sales Quantity -->
+              <div class="stat stat-quantity mobile-stat">
+                <div id="total-sales">
+                  <p class="body-stat">0</p>
+                </div>
+                <p class="head-stat">Sales Quantity</p>
+              </div>
+            </div>
+          </div>
+          <!-- Sales Distribution -->
+          <div class="dashboard-1r">
+            <p class="ta-center max-width m-0 text-bold">Sales Quantity by State</p>
+            <canvas id="bar-sales-distribution"></canvas>
+          </div>
+        </div>
+
+        <div class="dashboard-2">
+          <div class="pie-segment">
+            <!-- Sales Segmentation -->
+            <div class="segment">
+              <p class="ta-center max-width m-0 text-bold">Sales Quantity by Segment</p>
+              <canvas class="max-height" id="segment"></canvas>
+            </div>
+            <div class="consumer">
+              <p class="ta-center max-width m-0 text-bold">User by Segment</p>
+              <canvas class="max-height" id="consumer"></canvas>
+            </div>
+          </div>
+
+          <!-- Profitable Product -->
+          <div class="profit dashboard-right">
+            <table class="max-height text" id="productTable">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Profitable</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data akan dimuat dengan JS -->
+                </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="dashboard">
+          <p class="ta-center max-width m-0 text-bold">Sales Quantity by Time</p>
+          <canvas class="max-width max-height" id="lineChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Sales Distribution -->
+      <div class="dashboard" id="box-sales-distribution">
+        <h3>SALES DISTRIBUTION</h3>
+      </div>
+      <div class="display-flex max-width">
+        <div class="text satupertiga">
+          <p>3 things we can highlight:</p>
+          <ul>
+              <li>Florida not in top 5 in sales:
+                  <ul>
+                      <li>Population Composition</li>
+                      <li>Shopping Culture</li>
+                      <li>Industry and Occupation Characteristics</li>
+                  </ul>
+              </li>
+              <br>
+              <li>Washington is in the fifth highest position:
+                  <ul>
+                      <li>Labor Market and Industry</li>
+                      <li>High Purchasing Power</li>
+                      <li>University and Research Influence</li>
+                  </ul>
+              </li>
+              <br>
+              <li>New York up position:
+                  <ul>
+                      <li>Urban Population Concentration</li>
+                      <li>Balance between Income and Cost of Living</li>
+                      <li>Labor Market and Industry</li>
+                      <li>Accessibility and Distribution</li>
+                  </ul>
+              </li>
+          </ul>
+        </div>
+
+        <!-- Bar Chart Sales Distribution -->
+        <div class="duapertiga">
+          <p class="ta-center max-width m-0  text-bold">Top 5 Population by State</p>
+          <canvas class="max-width max-height" id="bar-population-distribution"></canvas>
+        </div>
+      </div>
+
+      <!-- Sales Segmentation -->
+      <div class="dashboard" id="box-sales-segmentation">
+        <h3>SALES SEGMENTATION</h3>
+      </div>
+      <div class="dashboard display-row mt-0" id="area-sales-segmentation" >
+        <div class="duapertiga display-row ">
+          <!-- Tempat kedua untuk grafik 1 -->
+          <div class="segment">
+              <p class="ta-center max-width m-0 text-bold">Sales Quantity by Segment</p>
+              <canvas class="max-height" id="segment2"></canvas>
+          </div>
+          <!-- Tempat kedua untuk grafik 2 -->
+          <div class="consumer">
+              <p class="ta-center max-width m-0 text-bold">User by Segment</p>
+              <canvas class="max-height" id="consumer2"></canvas>
+          </div>
+        </div>
+        <div class="satupertiga text">
+          <tr>
+            <td>
+              <ul>
+                  <li>Consumer dominance on user and sales quntity:
+                      <ul>
+                          <li>Ease of access</li>
+                          <li>More choices</li>
+                          <li>Save time and effort</li>
+                          <li>Easy delivery</li>
+                          <li>Reviews and recommendations</li>
+                          <li>Ease of payment</li>
+                      </ul>
+                  </li>
+                  <br>
+                  <li>Corporate is lower than consumer:
+                      <ul>
+                          <li>Special needs and testing</li>
+                          <li>Instant availability</li>
+                          <li>Price negotiation</li>
+                          <li>Busininess relationship</li>
+                          <li>Shipping and handling for operational efficiency</li>
+                      </ul>
+                  </li>
+                  <br>
+                  <li>Home office is lower than others
+                      <ul>
+                          <li>Size and scale</li>
+                          <li>Space usage</li>
+                          <li>Cost and spending awareness</li>
+                          <li>Existing equipment and flexibelity of tools</li>
+                      </ul>
+                  </li>
+              </ul>
+            </td>
+          </tr>
+        </div>
+      </div>
+
+      <!-- Repetition Trend -->
+      
+      <div class="dashboard" id="box-repetition-trend">
+        <h3>REPETITION TREND</h3>
+      </div>
+      <div class="dashboard mt-0">
+        <p class="ta-center max-width m-0 text-bold">Sales Quantity by Time</p>
+        <canvas class="max-width max-height" id="lineChart2"></canvas>
+      </div>
+      <div class="dashboard display-row mt-0">
+        <div class="satuperempat text br m-1 text-light p-1">
+          <h4 class="ta-center mt-0">New School Year</h4>
+          <p class="ta-justify">The school year start in September, Stephanie Spencer, from the History of Education Society, said the school year started in September to increase the likelihood of children attending. (BBC)</p>
+        </div>
+        <div class="satuperempat text br m-1 text-light p-1">
+          <h4 class="ta-center mt-0">Fall Intake</h4>
+          <p class="ta-justify">The  fall intake offers more opportunities for students in terms of scholarships and financial aid in September. (Yocket)</p>
+        </div>
+        <div class="satuperempat text br m-1 text-light p-1">
+          <h4 class="ta-center mt-0">Black Friday</h4>
+          <p class="ta-justify">The date for Black Friday varies between November 23 and 29. (Wikipedia)</p>
+        </div>
+      </div>
+
+      <!-- Profitable Product -->
+      <div class="dashboard" id="box-profitable-product">
+        <h3>PROFITABLE PRODUCT</h3>
+      </div>
+      <div class="dashboard display-row mt-0">
+        <div class="dashboard-left text display-column space-between">
+          <div class="dashboard" >
+            <h3 class="ta-center">Highest Profit Products Based on Total Profit</h3>
+            <p>Helps in determining effective sales strategies, such as highlighting these products more or increasing promotions related to them. Helps in planning better stock and sales strategies.</p>
+          </div>
+          <div class="dashboard">
+            <h3 class="ta-center">Products with Highest Profit Potential by Unit Profit</h3>
+            <p>Paying attention to the products with the highest profit potential based on unit sales helps in finding opportunities to improve profit margins, such as reconsidering prices or finding more efficient resources to produce or acquire these products.</p>
+          </div>
+        </div>
+        <div class="profit dashboard-right">
+          <table class="max-height text" id="productTable2">
+              <thead>
+                  <tr>
+                      <th>Product</th>
+                      <th>Profitable</th>
+                      <th>Profit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- Data akan dimuat dengan JS -->
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Data Tables -->
+      <div class="dashboard" id="box-data-tables">
+        <h3>DATA TABLES</h3>
+      </div>
+      <div class="dashboard text">
+        <div class="table-container">
+          <table id="data-tables" class="max-width">
+            <thead id="tableHead">
+              <tr>
+                <th>Order_ID</th>
+                <th>Order_Date</th>
+                <th>Customer_ID</th>
+                <th>Segment</th>
+                <th>State</th>
+                <th>Sub_Category</th>
+                <th>Sales</th>
+                <th>Quantity</th>
+                <th>Profit</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      
+    <!-- Footer -->
+    <footer>
+      <strong class="footer">Superstore&nbsp;Copyright &copy; 2024</strong>
+    </footer>
+  </div>
+
+  <!-- Javascript -->
+  <script src="/dist/js/script.js"></script>
+</body>
+</html>
+
